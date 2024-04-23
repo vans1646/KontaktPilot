@@ -1,0 +1,12 @@
+syntax: glob
+*/build/
+*/out/
+/build/*
+/.idea/*
+/*/target/*
+/*/*.iml
+/*.iml
+.classpath
+.project
+org.*
+/*/*/*/*/application.properties
