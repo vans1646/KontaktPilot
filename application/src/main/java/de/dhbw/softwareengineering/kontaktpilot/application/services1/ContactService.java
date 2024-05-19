@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.kontaktpilot.application.services1;
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.repositories.ContactBridgeRepository;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,15 @@ public class ContactService {
         List<Category> allCategories = contactBridgeRepository.getAllCategories();
         List<Category> filteredCategories = allCategories.stream().distinct().collect(Collectors.toList());
         return new ArrayList<>(filteredCategories);
+    }
+
+    public Contact searchContact(ContactName contactName) {
+        List<Contact> allContacts = contactBridgeRepository.getAllContacts();
+        for (Contact contact : allContacts) {
+            if (contact.getName().equals(contactName)) {
+                return contact;
+            }
+        }
+        return null;
     }
 }

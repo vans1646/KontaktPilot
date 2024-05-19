@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.kontaktpilot.plugins.rest;
 import de.dhbw.softwareengineering.kontaktpilot.application.services1.ContactService;
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -56,6 +57,20 @@ public class ContactController {
         }
     }
 
+    @GetMapping(path = "/contact/search")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contact found"),
+            @ApiResponse(responseCode = "404", description = "Could not find contact")
+    })
+    public ResponseEntity<Contact> searchContact(@RequestParam String firstName, @RequestParam String lastName) {
+        Contact contact = contactService.searchContact(new ContactName(firstName, lastName));
+        if (contact == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(contact);
+        }
+    }
+
     @PostMapping(path = "contact/add")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Contact added"),
@@ -101,19 +116,16 @@ public class ContactController {
         }
     }
 
-
     @GetMapping(path = "/category/{category}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Contacts found"),
             @ApiResponse(responseCode = "404", description = "No contacts found")
     })
-    public ResponseEntity<List<Contact>> getContactsByCategory(Category category) {
+    public ResponseEntity<List<Contact>> getContactsByCategory(@PathVariable Category category) {
         try {
             return ResponseEntity.ok(contactService.getContactsByCategory(category));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
-
-
 }
