@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "de.dhbw.softwareengineering.kontaktpilot.plugins")
-@EntityScan("de.dhbw.softwareengineering.deinProjektname.domain.entities")
+@EntityScan("de.dhbw.softwareengineering.kontaktpilot.domain.entities")
 public class MainApplication {
 
     public static void main(String[] args) {
