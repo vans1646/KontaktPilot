@@ -1,8 +1,11 @@
 package de.dhbw.softwareengineering.kontaktpilot.domain.entities;
 
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.Birthday;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactAddress;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
+
+import org.apache.commons.lang3.Validate;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -11,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name="users")
 public class Contact {
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="contact_id")
@@ -21,7 +25,20 @@ public class Contact {
     private String phoneNumber;
     private Category category;
 
-    public Contact(ContactName name, ContactAddress address, String email, String phoneNumber, Category category) {
+    private Birthday birthday;
+
+    public Contact(ContactName name, ContactAddress address, String email, String phoneNumber, Category category, Birthday birthday){
+        Validate.notBlank(name.getFirstName());
+        Validate.notBlank(name.getLastName());
+        Validate.notBlank(address.getStreet());
+        Validate.notBlank(address.getHouseNumber());
+        Validate.notBlank(address.getCity());
+        Validate.notBlank(address.getZipCode());
+        Validate.notBlank(email);
+        Validate.notBlank(phoneNumber);
+        Validate.notNull(category);
+        Validate.notNull(birthday);
+
         this.name = name;
         this.address = address;
         this.email = email;
@@ -35,6 +52,7 @@ public class Contact {
         this.email = "";
         this.phoneNumber = "";
         this.category = new Category();
+        this.birthday = new Birthday();
     }
 
     public UUID getId() {
@@ -61,6 +79,10 @@ public class Contact {
         return category;
     }
 
+    public Birthday getBirthday() {
+        return birthday;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,7 +91,8 @@ public class Contact {
         return Objects.equals(name, contact.name) && //
                 Objects.equals(address, contact.address) && //
                 Objects.equals(email, contact.email) && //
-                Objects.equals(phoneNumber, contact.phoneNumber);
+                Objects.equals(phoneNumber, contact.phoneNumber) && //
+                Objects.equals(birthday, contact.birthday);
     }
 
     @Override

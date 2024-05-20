@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.kontaktpilot.plugins.rest;
 import de.dhbw.softwareengineering.kontaktpilot.application.services1.ContactService;
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.Birthday;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactAddress;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
@@ -60,7 +61,8 @@ class ContactControllerContactsTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         // Action
         when(contactService.getAllContacts()).thenReturn(Collections.singletonList(contact));
@@ -76,7 +78,8 @@ class ContactControllerContactsTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         // Action
         when(contactService.addContact(contact)).thenReturn(true);
@@ -93,7 +96,8 @@ class ContactControllerContactsTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         // Action
         when(contactService.addContact(contact)).thenReturn(true, false);
@@ -127,7 +131,8 @@ class ContactControllerContactsTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345", "Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         // Action
         when(contactService.getContact(uuid)).thenReturn(contact);
@@ -144,7 +149,8 @@ class ContactControllerContactsTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         // Action
         when(contactService.searchContact(name)).thenReturn(contact);

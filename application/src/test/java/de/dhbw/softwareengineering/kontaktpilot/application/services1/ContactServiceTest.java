@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.kontaktpilot.application.services1;
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.repositories.ContactBridgeRepository;
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.Birthday;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactAddress;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
@@ -53,7 +54,8 @@ class ContactServiceTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         // Action
         when(contactBridgeRepository.getContact(contact.getId())).thenReturn(contact);
@@ -69,7 +71,8 @@ class ContactServiceTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         //Action
         doNothing().when(contactBridgeRepository).deleteContact(contact.getId());
@@ -87,12 +90,14 @@ class ContactServiceTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         ContactName name2 = new ContactName("Max", "Mustermann");
         ContactAddress address2 = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category2 = new Category("Friends");
-        Contact contact2 = new Contact(name2, address2, "max.muster@mail.com", "1234567890", category2);
+        Birthday birthday2 = new Birthday(24, 12, 2002);
+        Contact contact2 = new Contact(name2, address2, "ben.doever@mail.com", "1234567890", category2, birthday2);
 
         // Action
         when(contactBridgeRepository.getContactsByCategory(category)).thenReturn(Collections.singletonList(contact));
@@ -110,12 +115,14 @@ class ContactServiceTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         ContactName name2 = new ContactName("Ben", "Doever");
         ContactAddress address2 = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category2 = new Category("Friends");
-        Contact contact2 = new Contact(name2, address2, "ben.doever@mail.com", "1234567890", category2);
+        Birthday birthday2 = new Birthday(24, 12, 2002);
+        Contact contact2 = new Contact(name2, address2, "ben.doever@mail.com", "1234567890", category2, birthday2);
 
         List<Category> allCategories = Arrays.asList(category, category2);
 
@@ -134,7 +141,8 @@ class ContactServiceTest {
         ContactName name = new ContactName("John", "Doe");
         ContactAddress address = new ContactAddress("Main Street", "1234", "12345","Springfield");
         Category category = new Category("Family");
-        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category);
+        Birthday birthday = new Birthday(24, 7, 2002);
+        Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
 
         // Action
         when(contactBridgeRepository.getAllContacts()).thenReturn(Collections.singletonList(contact));
