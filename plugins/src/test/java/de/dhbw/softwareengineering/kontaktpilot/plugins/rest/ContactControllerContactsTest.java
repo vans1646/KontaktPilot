@@ -1,6 +1,6 @@
 package de.dhbw.softwareengineering.kontaktpilot.plugins.rest;
 
-import de.dhbw.softwareengineering.kontaktpilot.application.services1.ContactService;
+import de.dhbw.softwareengineering.kontaktpilot.application.services.ContactService;
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Birthday;
@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
@@ -83,7 +82,7 @@ class ContactControllerContactsTest {
 
         // Action
         when(contactService.addContact(contact)).thenReturn(true);
-        ResponseEntity<Void> responseEntity = contactController.addContact(contact);
+        ResponseEntity<UUID> responseEntity = contactController.addContact(contact);
 
         // Test
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), "Contact should be added successfully");
@@ -101,8 +100,8 @@ class ContactControllerContactsTest {
 
         // Action
         when(contactService.addContact(contact)).thenReturn(true, false);
-        ResponseEntity<Void> responseEntity = contactController.addContact(contact);
-        ResponseEntity<Void> responseEntity2 = contactController.addContact(contact);
+        ResponseEntity<UUID> responseEntity = contactController.addContact(contact);
+        ResponseEntity<UUID> responseEntity2 = contactController.addContact(contact);
 
         // Test
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), "Contact should be added successfully");

@@ -1,4 +1,4 @@
-package de.dhbw.softwareengineering.kontaktpilot.application.services1;
+package de.dhbw.softwareengineering.kontaktpilot.application.services;
 
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Embeddable
 public class Category {
-    private String name;
+    private final String name;
 
     public Category(String name) {
         this.name = name;

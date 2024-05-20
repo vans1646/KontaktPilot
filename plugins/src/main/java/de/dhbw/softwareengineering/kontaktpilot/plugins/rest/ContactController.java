@@ -1,6 +1,6 @@
 package de.dhbw.softwareengineering.kontaktpilot.plugins.rest;
 
-import de.dhbw.softwareengineering.kontaktpilot.application.services1.ContactService;
+import de.dhbw.softwareengineering.kontaktpilot.application.services.ContactService;
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.CategoryNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
@@ -29,7 +29,7 @@ public class ContactController {
 
     @GetMapping
     public String getDefault() {
-        return "Hello World";
+        return "Hello World on Contacts!";
     }
 
     /*
@@ -78,9 +78,9 @@ public class ContactController {
             @ApiResponse(responseCode = "200", description = "Contact added"),
             @ApiResponse(responseCode = "400", description = "Contact already exists")
     })
-    public ResponseEntity<Void> addContact(@RequestBody Contact contact) {
+    public ResponseEntity<UUID> addContact(@RequestBody Contact contact) {
         if (contactService.addContact(contact)) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(contact.getId());
         } else {
             return ResponseEntity.badRequest().build();
         }
