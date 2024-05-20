@@ -2,6 +2,8 @@ package de.dhbw.softwareengineering.kontaktpilot.plugins.rest;
 
 import de.dhbw.softwareengineering.kontaktpilot.application.services1.ContactService;
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
+import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.CategoryNotFoundException;
+import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -52,7 +54,7 @@ public class ContactController {
     public ResponseEntity<Contact> getContact(@PathVariable UUID UUID) {
         try {
             return ResponseEntity.ok(contactService.getContact(UUID));
-        } catch (Exception e) {
+        } catch (ContactNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -74,13 +76,13 @@ public class ContactController {
     @PostMapping(path = "contact/add")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Contact added"),
-            @ApiResponse(responseCode = "409", description = "Contact already exists")
+            @ApiResponse(responseCode = "400", description = "Contact already exists")
     })
-    public ResponseEntity<ApiResponse> addContact(@RequestBody Contact contact) {
+    public ResponseEntity<Void> addContact(@RequestBody Contact contact) {
         if (contactService.addContact(contact)) {
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.status(409).build();
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -89,11 +91,11 @@ public class ContactController {
             @ApiResponse(responseCode = "200", description = "Contact deleted"),
             @ApiResponse(responseCode = "404", description = "Contact not found")
     })
-    public ResponseEntity<ApiResponse> deleteContact(@PathVariable UUID UUID) {
+    public ResponseEntity<Void> deleteContact(@PathVariable UUID UUID) {
         try {
             contactService.deleteContact(UUID);
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
+        } catch (ContactNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -116,15 +118,16 @@ public class ContactController {
         }
     }
 
-    @GetMapping(path = "/category/{category}")
+    @GetMapping(path = "/category/contacts")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Contacts found"),
             @ApiResponse(responseCode = "404", description = "No contacts found")
     })
-    public ResponseEntity<List<Contact>> getContactsByCategory(@PathVariable Category category) {
+    public ResponseEntity<List<Contact>> getContactsByCategory(@RequestParam String categoryName) {
+        Category category = new Category(categoryName);
         try {
             return ResponseEntity.ok(contactService.getContactsByCategory(category));
-        } catch (Exception e) {
+        } catch (CategoryNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }

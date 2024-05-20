@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.kontaktpilot.plugins.persistence.contact;
 
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
+import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.repositories.ContactBridgeRepository;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class ContactRepository implements ContactBridgeRepository {
 
     @Override
     public void deleteContact(UUID uuid) {
+        if (!this.springContactRepository.existsById(uuid)) {
+            throw new ContactNotFoundException("Contact with UUID " + uuid + " does not exist");
+        }
         this.springContactRepository.deleteById(uuid);
     }
 

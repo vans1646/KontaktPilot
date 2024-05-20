@@ -1,6 +1,8 @@
 package de.dhbw.softwareengineering.kontaktpilot.application.services1;
 
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
+import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.CategoryNotFoundException;
+import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.repositories.ContactBridgeRepository;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
@@ -8,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,7 +28,11 @@ public class ContactService {
     }
 
     public Contact getContact(UUID uuid) {
-        return contactBridgeRepository.getContact(uuid);
+        try {
+            return contactBridgeRepository.getContact(uuid);
+        } catch (ContactNotFoundException e) {
+            throw e;
+        }
     }
 
     public boolean addContact(Contact contact) {
@@ -42,11 +47,19 @@ public class ContactService {
     }
 
     public void deleteContact(UUID uuid) {
-        contactBridgeRepository.deleteContact(uuid);
+        try {
+            contactBridgeRepository.deleteContact(uuid);
+        } catch (ContactNotFoundException e) {
+            throw e;
+        }
     }
 
     public List<Contact> getContactsByCategory(Category category) {
-        return contactBridgeRepository.getContactsByCategory(category);
+        try {
+            return contactBridgeRepository.getContactsByCategory(category);
+        } catch (CategoryNotFoundException e) {
+            throw e;
+        }
     }
 
     public List<Category> getAllCategories() {
@@ -56,11 +69,15 @@ public class ContactService {
     }
 
     public Contact searchContact(ContactName contactName) {
-        List<Contact> allContacts = contactBridgeRepository.getAllContacts();
-        for (Contact contact : allContacts) {
-            if (contact.getName().equals(contactName)) {
-                return contact;
+        try {
+            List<Contact> allContacts = contactBridgeRepository.getAllContacts();
+            for (Contact contact : allContacts) {
+                if (contact.getName().equals(contactName)) {
+                    return contact;
+                }
             }
+        } catch (ContactNotFoundException e) {
+            throw e;
         }
         return null;
     }
