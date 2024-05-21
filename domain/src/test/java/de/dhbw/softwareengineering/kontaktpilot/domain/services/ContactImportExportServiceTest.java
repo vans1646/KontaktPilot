@@ -29,7 +29,6 @@ import static org.mockito.Mockito.doThrow;
 @ExtendWith(MockitoExtension.class)
 public class ContactImportExportServiceTest {
 
-    @Mock
     private ContactImportExportService service = new ContactImportExportService();
 
     @Test
@@ -59,9 +58,6 @@ public class ContactImportExportServiceTest {
         // Setup
         URL resourceUrl = getClass().getClassLoader().getResource("invalid_test_data.csv");
         String path = resourceUrl.getPath();
-
-        // Action
-        doThrow(new RuntimeException("Invalid data")).when(service).importContacts(path);
 
         // Test
         assertThrows(RuntimeException.class, () -> service.importContacts(path));
@@ -112,9 +108,6 @@ public class ContactImportExportServiceTest {
         Birthday birthday = new Birthday(24, 7, 2002);
         Contact contact = new Contact(name, address, "john.doe@mail.com", "1234567890", category, birthday);
         contacts.add(contact);
-
-        // Action
-        doThrow(new RuntimeException("Invalid path")).when(service).exportContacts(path, contacts);
 
         // Test
         assertThrows(RuntimeException.class, () -> service.exportContacts(null, contacts));

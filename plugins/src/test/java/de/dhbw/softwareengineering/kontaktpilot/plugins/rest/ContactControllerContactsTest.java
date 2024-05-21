@@ -42,9 +42,9 @@ class ContactControllerContactsTest {
     @Test
     @DisplayName("Test default contact endpoint")
     void testDefaultContact() {
-        String expected = "Hello World";
+        String expected = "Hello World on Contacts!";
         String actual = contactController.getDefault();
-        assertEquals(expected, actual, "Default message should be 'Hello World'");
+        assertEquals(expected, actual, "Default message should be 'Hello World on Contacts!'");
     }
 
     @Test
