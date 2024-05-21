@@ -9,12 +9,13 @@ import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
 import org.apache.commons.lang3.Validate;
 import jakarta.persistence.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-public class Contact {
+public class Contact implements Iterable<Note>{
 
     @Id
     @GeneratedValue
@@ -128,7 +129,7 @@ public class Contact {
     }
 
     public Note getNoteById(UUID noteId) throws NoteNotFoundException {
-        for (Note note : notes) {
+        for (Note note : this) {
             if (note.getId().equals(noteId)) {
                 return note;
             }
@@ -151,5 +152,10 @@ public class Contact {
     @Override
     public int hashCode() {
         return Objects.hash(name, address, email, phoneNumber, birthday);
+    }
+
+    @Override
+    public Iterator<Note> iterator() {
+        return notes.iterator();
     }
 }
