@@ -8,6 +8,7 @@ import de.dhbw.softwareengineering.kontaktpilot.domain.values.Birthday;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactAddress;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
+import de.dhbw.softwareengineering.kontaktpilot.domain.services.ContactImportExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,12 @@ import java.util.stream.Collectors;
 @Service
 public class ContactService {
     private final ContactBridgeRepository contactBridgeRepository;
+    private final ContactImportExportService contactImportExportService;
 
     @Autowired
-    public ContactService(ContactBridgeRepository contactBridgeRepository) {
+    public ContactService(ContactBridgeRepository contactBridgeRepository, ContactImportExportService contactImportExportService) {
         this.contactBridgeRepository = contactBridgeRepository;
+        this.contactImportExportService = contactImportExportService;
     }
 
     public List<Contact> getAllContacts() {
@@ -186,6 +189,22 @@ public class ContactService {
             contactBridgeRepository.save(contact);
             return contact;
         } catch (ContactNotFoundException e) {
+            throw e;
+        }
+    }
+
+    public List<Contact> importContacts(String path) {
+        try {
+            return contactImportExportService.importContacts(path);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void exportContacts(String path) {
+        try {
+            contactImportExportService.exportContacts(path, contactBridgeRepository.getAllContacts());
+        } catch (Exception e) {
             throw e;
         }
     }

@@ -2,6 +2,8 @@ package de.dhbw.softwareengineering.kontaktpilot.domain.values;
 
 import jakarta.persistence.Embeddable;
 
+import java.util.Objects;
+
 
 @Embeddable
 public class Birthday {
@@ -41,5 +43,18 @@ public class Birthday {
 
     public int getBirthyear() {
         return birthyear;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Birthday birthday1 = (Birthday) o;
+        return birthday == birthday1.birthday && birthmonth == birthday1.birthmonth && birthyear == birthday1.birthyear;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(birthday, birthmonth, birthyear);
     }
 }

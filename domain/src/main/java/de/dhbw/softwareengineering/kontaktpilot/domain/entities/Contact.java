@@ -46,6 +46,7 @@ public class Contact {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.category = category;
+        this.birthday = birthday;
     }
 
     public Contact() {

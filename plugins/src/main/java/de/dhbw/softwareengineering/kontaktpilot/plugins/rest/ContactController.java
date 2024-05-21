@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -209,6 +210,38 @@ public class ContactController {
             return ResponseEntity.ok(contactService.getContactsByCategory(category));
         } catch (CategoryNotFoundException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    /*
+        Endpoints /contacts/importexport/*
+        Import and export contacts
+    */
+
+    @PostMapping(path = "/import")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contacts imported"),
+            @ApiResponse(responseCode = "400", description = "Could not import contacts")
+    })
+    public ResponseEntity<List<Contact>> importContacts(@RequestParam String path) {
+        try {
+            return ResponseEntity.ok(contactService.importContacts(path));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping(path = "/export")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contacts exported"),
+            @ApiResponse(responseCode = "400", description = "Could not export contacts")
+    })
+    public ResponseEntity<Void> exportContacts(@RequestParam String path) {
+        try {
+            contactService.exportContacts(path);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

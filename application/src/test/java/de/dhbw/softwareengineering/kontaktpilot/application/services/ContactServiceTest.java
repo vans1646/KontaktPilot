@@ -34,7 +34,7 @@ class ContactServiceTest {
 
     @BeforeEach
     void setUp() {
-        contactService = new ContactService(contactBridgeRepository);
+        contactService = new ContactService(contactBridgeRepository, null);
     }
 
     @Test
