@@ -4,7 +4,9 @@ import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.CategoryNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.repositories.ContactBridgeRepository;
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.Birthday;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactAddress;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,23 @@ public class ContactService {
     }
 
     public boolean addContact(Contact contact) {
+        if (contact.getName() == null || contact.getName().getFirstName().isBlank() || contact.getName().getLastName().isBlank()) {
+            throw new IllegalArgumentException("Contact name must not be empty");
+        } else if (contact.getCategory() == null || contact.getCategory().getName().isBlank()) {
+            throw new IllegalArgumentException("Contact category must not be empty");
+        } else if (contact.getPhoneNumber() == null || contact.getPhoneNumber().isBlank()) {
+            throw new IllegalArgumentException("Contact phone number must not be empty");
+        } else if (contact.getEmail() == null || contact.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Contact email must not be empty");
+        } else if (contact.getAddress() == null || //
+                contact.getAddress().getStreet().isBlank() || //
+                contact.getAddress().getCity().isBlank() || //
+                contact.getAddress().getZipCode().isBlank() || //
+                contact.getAddress().getHouseNumber().isBlank()) {
+            throw new IllegalArgumentException("Contact address must not be empty");
+        } else if (contact.getBirthday() == null) {
+            throw new IllegalArgumentException("Contact birthday must not be empty");
+        }
         List<Contact> allContacts = contactBridgeRepository.getAllContacts();
         for (Contact existingContact : allContacts) {
             if (existingContact.equals(contact)) {
@@ -80,5 +99,94 @@ public class ContactService {
             throw e;
         }
         return null;
+    }
+
+    public Contact updateContactName(UUID uuid, ContactName name) {
+        if (name == null || name.getFirstName().isBlank() || name.getLastName().isBlank()) {
+            throw new IllegalArgumentException("Contact name must not be empty");
+        }
+        try {
+            Contact contact = contactBridgeRepository.getContact(uuid);
+            contact.setName(name);
+            contactBridgeRepository.save(contact);
+            return contact;
+        } catch (ContactNotFoundException e) {
+            throw e;
+        }
+    }
+
+    public Contact updateContactAddress(UUID uuid, ContactAddress address) {
+        if (address == null || //
+                address.getStreet().isBlank() || //
+                address.getCity().isBlank() || //
+                address.getZipCode().isBlank() || //
+                address.getHouseNumber().isBlank()) {
+            throw new IllegalArgumentException("Contact address must not be empty");
+        }
+        try {
+            Contact contact = contactBridgeRepository.getContact(uuid);
+            contact.setAddress(address);
+            contactBridgeRepository.save(contact);
+            return contact;
+        } catch (ContactNotFoundException e) {
+            throw e;
+        }
+    }
+
+    public Contact updateContactEmail(UUID uuid, String email) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("Contact email must not be empty");
+        }
+        try {
+            Contact contact = contactBridgeRepository.getContact(uuid);
+            contact.setEmail(email);
+            contactBridgeRepository.save(contact);
+            return contact;
+        } catch (ContactNotFoundException e) {
+            throw e;
+        }
+    }
+
+    public Contact updateContactPhoneNumber(UUID uuid, String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.isBlank()) {
+            throw new IllegalArgumentException("Contact phone number must not be empty");
+        }
+        try {
+            Contact contact = contactBridgeRepository.getContact(uuid);
+            contact.setPhoneNumber(phoneNumber);
+            contactBridgeRepository.save(contact);
+            return contact;
+        } catch (ContactNotFoundException e) {
+            throw e;
+        }
+    }
+
+
+    public Contact updateContactCategory(UUID uuid, Category category) {
+        if (category == null || category.getName().isBlank()) {
+            throw new IllegalArgumentException("Contact category must not be empty");
+        }
+        try {
+            Contact contact = contactBridgeRepository.getContact(uuid);
+            contact.setCategory(category);
+            contactBridgeRepository.save(contact);
+            return contact;
+        } catch (ContactNotFoundException e) {
+            throw e;
+        }
+    }
+
+    public Contact updateContactBirthday(UUID uuid, Birthday birthday) {
+        if (birthday == null) {
+            throw new IllegalArgumentException("Contact birthday must not be empty");
+        }
+        try {
+            Contact contact = contactBridgeRepository.getContact(uuid);
+            contact.setBirthday(birthday);
+            contactBridgeRepository.save(contact);
+            return contact;
+        } catch (ContactNotFoundException e) {
+            throw e;
+        }
     }
 }

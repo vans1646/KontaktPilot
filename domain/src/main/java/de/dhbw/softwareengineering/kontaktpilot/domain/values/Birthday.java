@@ -17,6 +17,15 @@ public class Birthday {
     }
 
     public Birthday(int day, int month, int year) {
+        if (day < 1 || day > 31) {
+            throw new IllegalArgumentException("Day must be between 1 and 31");
+        }
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("Month must be between 1 and 12");
+        }
+        if (year < 1900 || year > java.time.Year.now().getValue()) {
+            throw new IllegalArgumentException("Year must be between 1900 and current year");
+        }
         this.birthday = day;
         this.birthmonth = month;
         this.birthyear = year;

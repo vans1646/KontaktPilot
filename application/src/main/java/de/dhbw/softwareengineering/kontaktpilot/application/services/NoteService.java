@@ -25,6 +25,11 @@ public class NoteService {
     }
 
     public UUID addNoteToContact(Note note, UUID contactId) {
+        if (note.getTitle() == null || note.getTitle().isBlank()) {
+            throw new IllegalArgumentException("Note title must not be empty");
+        } else if (note.getContent() == null || note.getContent().isBlank()) {
+            throw new IllegalArgumentException("Note content must not be empty");
+        }
         try {
             Contact contact = contactBridgeRepository.getContact(contactId);
             contact.addNote(note);

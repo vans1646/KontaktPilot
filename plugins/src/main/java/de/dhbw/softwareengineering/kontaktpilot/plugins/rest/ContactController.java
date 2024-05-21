@@ -4,7 +4,9 @@ import de.dhbw.softwareengineering.kontaktpilot.application.services.ContactServ
 import de.dhbw.softwareengineering.kontaktpilot.domain.entities.Contact;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.CategoryNotFoundException;
 import de.dhbw.softwareengineering.kontaktpilot.domain.exceptions.ContactNotFoundException;
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.Birthday;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.Category;
+import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactAddress;
 import de.dhbw.softwareengineering.kontaktpilot.domain.values.ContactName;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -95,6 +97,84 @@ public class ContactController {
         try {
             contactService.deleteContact(UUID);
             return ResponseEntity.ok().build();
+        } catch (ContactNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping(path = "/contact/update/name/{UUID}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contact name updated"),
+            @ApiResponse(responseCode = "404", description = "Contact not found")
+    })
+    public ResponseEntity<Contact> updateContactName(@PathVariable UUID UUID, @RequestBody ContactName name) {
+        try {
+            return ResponseEntity.ok(contactService.updateContactName(UUID, name));
+        } catch (ContactNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping(path = "/contact/update/address/{UUID}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contact address updated"),
+            @ApiResponse(responseCode = "404", description = "Contact not found")
+    })
+    public ResponseEntity<Contact> updateContactAddress(@PathVariable UUID UUID, @RequestBody ContactAddress address) {
+        try {
+            return ResponseEntity.ok(contactService.updateContactAddress(UUID, address));
+        } catch (ContactNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping(path = "/contact/update/email/{UUID}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contact email updated"),
+            @ApiResponse(responseCode = "404", description = "Contact not found")
+    })
+    public ResponseEntity<Contact> updateContactEmail(@PathVariable UUID UUID, @RequestParam String email) {
+        try {
+            return ResponseEntity.ok(contactService.updateContactEmail(UUID, email));
+        } catch (ContactNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping(path = "/contact/update/phonenumber/{UUID}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contact phone number updated"),
+            @ApiResponse(responseCode = "404", description = "Contact not found")
+    })
+    public ResponseEntity<Contact> updateContactPhoneNumber(@PathVariable UUID UUID, @RequestParam String phoneNumber) {
+        try {
+            return ResponseEntity.ok(contactService.updateContactPhoneNumber(UUID, phoneNumber));
+        } catch (ContactNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping(path = "/contact/update/category/{UUID}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contact category updated"),
+            @ApiResponse(responseCode = "404", description = "Contact not found")
+    })
+    public ResponseEntity<Contact> updateContactCategory(@PathVariable UUID UUID, @RequestParam Category category) {
+        try {
+            return ResponseEntity.ok(contactService.updateContactCategory(UUID, category));
+        } catch (ContactNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping(path = "/contact/update/birthday/{UUID}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contact birthday updated"),
+            @ApiResponse(responseCode = "404", description = "Contact not found")
+    })
+    public ResponseEntity<Contact> updateContactBirthday(@PathVariable UUID UUID, @RequestParam Birthday birthday) {
+        try {
+            return ResponseEntity.ok(contactService.updateContactBirthday(UUID, birthday));
         } catch (ContactNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
